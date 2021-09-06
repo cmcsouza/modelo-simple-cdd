@@ -1,6 +1,6 @@
 aqui está um guia rápido para usar o CDD simples ...
 
-Início rápido (em http://wiki.debian.org/Simple-CDD/Howto)
+#Início rápido (em http://wiki.debian.org/Simple-CDD/Howto)
 
 Para experimentar o Simple-CDD, em um sistema Debian:
 
@@ -39,17 +39,17 @@ Crie um perfil chamado NAME:
 Observe que você não deve incluir dependências de pacote, mas apenas os pacotes
 você realmente quer.
 
-Construa o CD com o perfil selecionado NOME:
+Construa o CD com o perfil selecionado NAME:
 
- $ build-simple-cdd --profiles NOME
+ $ build-simple-cdd --profiles NAME
 
-Isso deve criar uma imagem de CD .iso no diretório "imagens" quando for
+Isso deve criar uma imagem de CD .iso no diretório "images" quando for
 terminou com seu perfil personalizado.
 
 Use qemu para testar:
 
  # apt-get install qemu
- $ build-simple-cdd --qemu --profiles NOME
+ $ build-simple-cdd --qemu --profiles NAME
 
 Recursos opcionais:
 
@@ -63,17 +63,17 @@ Para mais opções:
  $ build-simple-cdd --help
 
 
-O menos rápido
+#O menos rápido
 
 Preparando um Diretório de Trabalho Simple-CDD
 
- mkdir my-cdd
- cd my-cdd
+mkdir my-cdd
+cd my-cdd
 
 
-Perfis
+##profiles
 
-crie o diretório de perfis:
+crie o diretório de profiles:
 
  perfis mkdir
 
@@ -86,7 +86,7 @@ profiles / x-basic.preseed
 profiles / x-basic.packages
 profiles / x-basic.downloads
 
- *.Descrição
+ *.description
 
  breve descrição de uma linha do que o perfil faz
 
@@ -95,7 +95,7 @@ profiles / x-basic.downloads
  pacotes instalados quando o perfil é selecionado. não inclua pacotes como
  como linux-image ou grub, pois o debian-installer tratará disso especialmente.
 
- *.Transferências
+ *.downloads
  
  pacotes adicionais incluídos em um CD com o perfil, mas não instalados
  por simple-cdd (embora o debian-installer possa instalá-los)
@@ -116,7 +116,7 @@ profiles / x-basic.downloads
 
 para construir uma imagem de CD com o perfil x-basic:
 
- build-simple-cdd --profiles x-basic
+> build-simple-cdd --profiles x-basic
 
 ao instalar a partir do CD, um menu deve aparecer perguntando quais perfis você
 deseja instalar. selecione todos os perfis que você deseja, e o debconf pré-configuração
