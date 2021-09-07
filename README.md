@@ -1,19 +1,18 @@
-# Início rápido (em http://wiki.debian.org/Simple-CDD/Howto)
+# Início rápido
+## (http://wiki.debian.org/Simple-CDD/Howto)
 
 Para experimentar o Simple-CDD, em um sistema Debian:
-
 Instale o simple-cdd (como root):
 
- # apt-get install simple-cdd
+ > # apt-get install simple-cdd
 
 Crie um diretório de trabalho (como um usuário):
+> $ mkdir ~ / my-simple-cdd
+> $ cd ~ / my-simple-cdd'
 
- $ mkdir ~ / my-simple-cdd
- $ cd ~ / my-simple-cdd
+## Construa um CD básico:
 
-Construa um CD básico:
-
- $ build-simple-cdd
+> $ build-simple-cdd
 
 Isso criará um espelho de pacote parcial no diretório tmp / mirror,
 e se tudo correr bem, uma imagem de CD .iso no diretório "imagens" quando
@@ -29,60 +28,61 @@ versão de alvos. Por exemplo, pode ser etch, lenny, sid, etc.
 Se esta etapa não funcionar, você precisa descobrir o porquê antes de tentar mais
 coisas complicadas.
 
-Crie um perfil chamado NAME:
-
- perfis de $ mkdir
- $ for p na lista-de-pacotes-que-você-deseja-instalados; faça echo $ p >> profiles / NAME.packages; feito
+### Crie um perfil chamado NAME:
+ > $ mkdir profiles
+ > $ for p in list-of-packages-you-want-installed ; do echo $p >> profiles/NAME.packages ; done
 
 Observe que você não deve incluir dependências de pacote, mas apenas os pacotes
 você realmente quer.
 
 Construa o CD com o perfil selecionado NAME:
 
- $ build-simple-cdd --profiles NAME
+ > $ build-simple-cdd --profiles NAME
 
 Isso deve criar uma imagem de CD .iso no diretório "images" quando for
 terminou com seu perfil personalizado.
 
 Use qemu para testar:
 
- # apt-get install qemu
- $ build-simple-cdd --qemu --profiles NAME
+> # apt-get install qemu
+> $ build-simple-cdd --qemu --profiles NAME
 
 Recursos opcionais:
 
 Se você quiser pré-configuração debconf, coloque um arquivo compatível com debconf-set-selections
 em profiles / NAME.preseed.
 
-Se você quiser um script de pós-instalação personalizado, coloque-o em profiles / NAME.postinst.
+*Se você quiser um script de pós-instalação personalizado, coloque-o em profiles / NAME.postinst.
 
-Para mais opções:
+*Para mais opções:
 
- $ build-simple-cdd --help
+> $ build-simple-cdd --help
 
 
-#O menos rápido
+# O menos rápido
 
 Preparando um Diretório de Trabalho Simple-CDD
 
-mkdir my-cdd
-cd my-cdd
+> mkdir my-cdd
+> CD my-cdd
 
 
-##profiles
+## profiles
 
 crie o diretório de profiles:
 
- perfis mkdir
-
+>  mkdir profiles
+>  
 para fazer um perfil personalizado, pense em um nome para ele, como "x-basic".
 
-edite ou crie arquivos no diretório "perfis", começando com o perfil
-nome e terminando em .preseed, .packages, .downloads, etc. por exemplo:
+edite ou crie arquivos no diretório "profiles", começando com o nome do perfil e terminando em .preseed, .packages, .downloads, etc. por exemplo:
 
+'''
 profiles / x-basic.preseed
 profiles / x-basic.packages
 profiles / x-basic.downloads
+'''
+
 
  *.description
 
@@ -112,7 +112,7 @@ profiles / x-basic.downloads
  definições de configuração específicas do perfil. originado durante a construção do CD.
 
 
-para construir uma imagem de CD com o perfil x-basic:
+### para construir uma imagem de CD com o perfil x-basic:
 
 > build-simple-cdd --profiles x-basic
 
@@ -121,7 +121,7 @@ deseja instalar. selecione todos os perfis que você deseja, e o debconf pré-co
 os arquivos preencherão o banco de dados debconf e os pacotes serão instalados.
 
 
-Perfil Padrão
+### Perfil Padrão
 
 o perfil denominado "default" é especial, porque sempre é instalado.
 
@@ -130,7 +130,7 @@ perfil padrão funcionando de certas maneiras (como instalar o
 perfis de cdd simples .udeb).
 
 
-Pré-configuração Debconf
+# Pré-configuração Debconf
 
 O preseed debconf é uma forma de pré-responder as questões feitas durante o pacote
 instalação e debian-installer.
@@ -146,10 +146,10 @@ como eles são solicitados antes de qualquer um dos arquivos de pré-configuraç
 
 a seguinte questão é usada pelo simple-cdd, modifique por sua própria conta e risco:
 
- d-i preseed / early_command
+ > d-i preseed / early_command
 
 
-Seleção automática de perfis
+ # Seleção automática de perfis
 
 para selecionar perfis automaticamente, em profiles / default.preseed, descomente o
 linha:
@@ -170,23 +170,28 @@ Seleção de idioma e país
 para pré-selecionar o idioma e o país, é recomendado usar o --locale
 opção de linha de comando:
 
- build-simple-cdd --locale en_US
+ build-simple-cdd --locale pt_BR
 
 
 Arquivos de configuração
 
 para especificar um arquivo de configuração:
 
- build-simple-cdd --conf my-cdd.conf
+ > build-simple-cdd --conf my-cdd.conf
 
 em my-cdd.conf, inclua valores como
 
- locale = en_US
+
+'''
+ locale = pt_BR
  perfis = "x-básico, ltsp"
  auto_profiles = "x-basic, ltsp"
  debian_mirror = "http: //my.local.mirror/debian"
+ '''
+
 
 você também pode especificar arquivos de configuração por perfil, em
+
 profiles / <perfil> .conf.
 
 
