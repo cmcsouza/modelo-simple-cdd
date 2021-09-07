@@ -21,6 +21,8 @@ bluebird-gtk-theme
 blueman
 bluez
 bluez-obexd
+copyq
+sudo
 caja
 caja-admin
 caja-common
@@ -922,14 +924,6 @@ zenity-common
 zip
 zlib1g-dev
 
-
-
-#
-#
-#
-#
-#
-#
 less
 build-essential
 exfat-utils
@@ -1016,8 +1010,6 @@ libreoffice-base-drivers
 libreoffice-avmedia-backend-vlc
 libreoffice-avmedia-backend-gstreamer
 libreoffice
-libreoffice-calc
-libreoffice-impress
 libreoffice-writer
 #libreoffice-common
 libreoffice-core
@@ -1283,9 +1275,6 @@ samba-vfs-modules
 samba-dsdb-modules
 attr
 update-inetd
-dropbox
-skypeforlinux
-
 
 
 #linux-compiler-gcc-6-x86
@@ -1329,4 +1318,5 @@ madfuload
 midisport-firmware
 firmware-zd1211
 #firmware-radeon-ucode
+
 
