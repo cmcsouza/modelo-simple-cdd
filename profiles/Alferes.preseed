@@ -1,0 +1,53 @@
+simple-cdd simple-cdd/profiles multiselect Alferes
+#tasksel   tasksel/first multiselect 
+d-i debian-installer/locale string pt_BR
+d-i debian-installer/language string pt_BR
+d-i debian-installer/country string BR
+d-i debian-installer/locale string pt_BR.UTF-8
+
+d-i keyboard-configuration/xkb-keymap select br
+
+
+d-i clock-setup/utc boolean true
+d-i time/zone string America/Sao_Paulo
+d-i clock-setup/ntp boolean true
+# Change to your preferred NTP server.
+d-i clock-setup/ntp-server string 200.198.34.94
+
+
+
+passwd   passwd/root-password    password cts@pmmg
+passwd   passwd/root-password-again  password cts@pmmg
+
+passwd   passwd/make-user    boolean true
+passwd   passwd/user-fullname    string Alferes
+passwd   passwd/username     string alferes
+passwd   passwd/user-password    password cts@pmmg
+passwd   passwd/user-password-again  password cts@pmmg
+
+
+d-i netcfg/choose_interface select auto
+
+d-i netcfg/get_hostname string Alferes-Desktop
+d-i netcfg/get_domain string policiamilitar.mg.gov.br
+
+d-i netcfg/wireless_wep string 
+
+d-i apt-setup/services-select multiselect
+d-i apt-setup/use_mirror boolean false
+base-config apt-setup/another boolean false
+base-config apt-setup/security-updates boolean false
+d-i pkgsel/upgrade select none
+
+d-i grub-installer/only_debian  boolean true
+d-i grub-installer/with_other_os  boolean true
+
+
+d-i finish-install/reboot_in_progress note
+base-config base-config/intro note 
+base-config base-config/login note 
+
+d-i     popularity-contest/participate  boolean false
+
+
+d-i preseed/early_command string anna-install simple-cdd-profiles

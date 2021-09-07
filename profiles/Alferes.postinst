@@ -1,0 +1,160 @@
+#!/bin/sh
+
+
+echo "export PATH=$PATH:/usr/local/sbin:/usr/sbin" > /root/.bashrc
+
+cp -r /usr/share/alferes-imagens/* /usr/share/images/desktop-base/
+
+echo "Alferes Linux 10 \\n \\l" > /etc/issue
+echo "Alferes Linux 10" > /etc/issue.net
+
+cp /usr/share/alferes-configuracoes/os-release /etc/
+cp /usr/share/alferes-configuracoes/motd /etc/
+
+
+
+mkdir -p /usr/share/images/desktop-base
+cp -r /usr/share/alferes-imagens/*.svg /usr/share/desktop-base/active-theme/wallpaper/contents/images/
+cp -r /usr/share/alferes-imagens/*.svg /usr/share/desktop-base/active-theme/lockscreen/contents/images/
+cp -r /usr/share/alferes-imagens/grub* /usr/share/desktop-base/active-theme/grub/
+cp -r /usr/share/alferes-imagens/1920x1080.svg /usr/share/desktop-base/active-theme/login/background.svg
+
+
+cp /usr/share/alferes-imagens/menu-16x16.png /usr/share/icons/gnome/16x16/places/debian-swirl.png
+cp /usr/share/alferes-imagens/menu-22x22.png /usr/share/icons/gnome/22x22/places/debian-swirl.png
+cp /usr/share/alferes-imagens/menu-24x24.png /usr/share/icons/gnome/24x24/places/debian-swirl.png
+cp /usr/share/alferes-imagens/menu-32x32.png /usr/share/icons/gnome/32x32/places/debian-swirl.png
+cp /usr/share/alferes-imagens/menu-48x48.png /usr/share/icons/gnome/48x48/places/debian-swirl.png
+cp /usr/share/alferes-imagens/menu-48x48.png /usr/share/icons/gnome/scalable/places/debian-swirl.svg
+cp /usr/share/alferes-imagens/menu-256x256.png /usr/share/icons/gnome/256x256/places/debian-swirl.png
+
+cp /usr/share/alferes-configuracoes/.profile /etc/skel/
+cp /usr/share/alferes-configuracoes/adduser.conf /etc/
+cp /usr/share/alferes-configuracoes/rc.local /etc/
+cp /usr/share/alferes-configuracoes/01ifupdown /etc/NetworkManager/dispatcher.d/
+
+sed -i 's/\#Port 22/Port 6455/g' /etc/ssh/sshd_config
+
+cp -rf /usr/share/alferes-configuracoes/.local /etc/skel/
+cp -rf /usr/share/alferes-configuracoes/.vnc /etc/skel/
+cp -rf /usr/share/alferes-configuracoes/.vnc /root/
+
+
+cp /usr/share/alferes-configuracoes/lsb_release.py /usr/share/pyshared/
+
+
+cp -rf /usr/share/alferes-configuracoes/applications/* /usr/share/applications/
+cp -rf /usr/share/alferes-configuracoes/directories/* /usr/share/mate/desktop-directories/
+cp -rf /usr/share/alferes-configuracoes/mate-applications.menu /etc/xdg/menus/mate-applications.menu
+
+
+
+
+cp /usr/share/alferes-configuracoes/grub /etc/default/
+
+sed -i 's/os="$1"/os="Alferes"/g' /etc/grub.d/10_linux
+sed -i 's/version="$2"/version="10"/g' /etc/grub.d/10_linux
+
+update-grub
+
+echo "Alferes-Desktop" > /etc/hostname
+echo "127.0.0.1  localhost.localdomain localhost Alferes-Desktop.localdomain Alferes-Desktop
+" > /etc/hosts
+
+
+
+
+
+
+
+
+###Alferes logando automaticamente
+
+echo "
+[LightDM]
+[SeatDefaults]
+autologin-user=alferes
+" > /etc/lightdm/lightdm.conf
+
+
+
+echo "deb http://repositorio.policiamilitar.mg.gov.br/alferes brumadinho main" > /etc/apt/sources.list
+
+apt-key add /usr/share/alferes-configuracoes/chave-repositorio-alferes
+
+cp -rf /usr/share/alferes-configuracoes/smb.conf /etc/samba/smb.conf
+cp /usr/share/alferes-configuracoes/applications/* /usr/share/applications/
+
+echo "SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+17 *    * * *   root    cd / && run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+1 10   * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.ocsinventory-agent )
+1 14   * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.ocsinventory-agent )
+" > /etc/crontab
+
+
+
+        mkdir /home/Compartilhado-em-Rede
+        mkdir /home/Compartilhado-Local
+        chmod 777 -R /home/Compartilhado-em-Rede
+        chmod 777 -R /home/Compartilhado-Local
+        ln -s /home/Compartilhado-em-Rede /etc/skel/
+        ln -s /home/Compartilhado-Local /etc/skel/
+
+
+
+
+
+
+        for usuario in `ls -1 /home` ; do
+
+        if [ $usuario != "Compartilhado-em-Rede"  ] && [ $usuario != "Compartilhado-Local"  ] ; then
+		 
+
+
+                ln -s /home/Compartilhado-em-Rede /home/$usuario/
+        	ln -s /home/Compartilhado-Local /home/$usuario/
+                cp -rfa /etc/skel/. /home/$usuario/
+                chown -R $usuario /home/$usuario
+
+
+
+        fi
+
+        done
+
+
+
+         grep -r '"network.proxy.http", "proxy.policiamilitar.mg.gov.br"' /etc/skel/.mozilla/firefox/nyl65dn9.default/prefs.js
+         if [ $? = 0 ] ; then
+               cp /usr/share/alferes-configuracoes/prefs.js /etc/skel/.mozilla/firefox/nyl65dn9.default/prefs.js
+         fi
+
+
+         for usuario in `ls -1 /home` ; do
+             if [ $usuario != "Compartilhado-em-Rede"  ] && [ $usuario != "Compartilhado-Local"  ] && [ $usuario != "lost+found"  ] ; then
+                 cp -r /etc/skel/Desktop/* /home/$usuario/Desktop/
+                 chown -R $usuario /home/$usuario/Desktop
+                 cp /etc/skel/.mozilla/firefox/nyl65dn9.default/places.sqlite /home/$usuario/.mozilla/firefox/nyl65dn9.default/places.sqlite
+                 chown -R $usuario /home/$usuario/.mozilla/firefox/nyl65dn9.default/places.sqlite
+                 usermod -G sambashare,plugdev,netdev,audio,dip,cdrom,floppy,lpadmin,scanner $usuario
+                 cp /usr/share/alferes-configuracoes/.profile /home/$usuario/
+
+                grep -r '"network.proxy.http", "proxy.policiamilitar.mg.gov.br"' /home/$usuario/.mozilla/firefox/nyl65dn9.default/prefs.js
+                if [ $? = 0 ] ; then
+                    cp /usr/share/alferes-configuracoes/prefs.js /home/$usuario/.mozilla/firefox/nyl65dn9.default/prefs.js
+                    chown $usuario -R  /home/$usuario/.mozilla/firefox/nyl65dn9.default/prefs.js
+                fi
+
+             fi
+
+        done
+
+#Adicionando usuário alferes ao grupo sudo
+adduser alferes sudo
+cp /usr/share/alferes-configuracoes/profile /etc/
